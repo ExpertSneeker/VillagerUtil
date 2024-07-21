@@ -8,6 +8,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
+import jdk.jshell.execution.Util;
 import me.apeiros.villagerutil.Setup;
 import me.apeiros.villagerutil.util.UUIDTagType;
 import me.apeiros.villagerutil.util.Utils;
@@ -75,6 +76,13 @@ public class TransportWand extends SlimefunItem {
                 // Check for villager tokens
                 if (!Utils.hasToken(p, inv)) {
                     p.sendMessage(ChatColors.color("&c村民令牌不足!"));
+                    v.shakeHead();
+                    return;
+                }
+
+                // 检查玩家是否拥有村民所在领地的 destroy 权限
+                if (!Utils.hasPlayerFlagPermission(p, v.getLocation(), "destroy")){
+                    p.sendMessage(ChatColors.color("&c你没有该村民所在领地的 destroy 权限!"));
                     v.shakeHead();
                     return;
                 }

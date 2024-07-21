@@ -1,10 +1,16 @@
 package me.apeiros.villagerutil.util;
 
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.api.ResidenceApi;
+import com.bekvon.bukkit.residence.containers.Flags;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import lombok.Setter;
 import lombok.experimental.UtilityClass;
 import me.apeiros.villagerutil.Setup;
 import me.apeiros.villagerutil.VillagerUtil;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -64,6 +70,29 @@ public class Utils {
         if (p.getGameMode() != GameMode.CREATIVE && VillagerUtil.useTokens()) {
             inv.removeItem(new SlimefunItemStack(Setup.TOKEN, 1));
         }
+    }
+
+    @Setter
+    private  static Residence residence;
+
+    public static boolean hasPlayerFlagPermission(Player player, Location location, String flagName){
+        if (residence == null){
+            return true;
+        }
+
+        ResidenceApi residenceApi = residence.getAPI();
+
+        ClaimedResidence claimedResidence = residenceApi.getResidenceManager().getByLoc(location);
+        if (claimedResidence == null){
+            return true;
+        }
+
+        Flags flag = Flags.getFlag(flagName);
+        if (flag == null){
+            return false;
+        }
+
+        return claimedResidence.getPermissions().playerHas(player.getName(), flag, false);
     }
 
 }

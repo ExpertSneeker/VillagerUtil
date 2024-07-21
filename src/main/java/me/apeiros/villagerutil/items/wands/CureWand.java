@@ -20,7 +20,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.ZombieVillager;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionData;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 public class CureWand extends SlimefunItem {
@@ -30,8 +32,19 @@ public class CureWand extends SlimefunItem {
         super(ig, Setup.CURE_WAND, "VU_CURE_WAND", RecipeType.ANCIENT_ALTAR, new ItemStack[] {
             SlimefunItems.VILLAGER_RUNE, SlimefunItems.MAGICAL_ZOMBIE_PILLS, Setup.TOKEN,
             SlimefunItems.MAGICAL_ZOMBIE_PILLS, new ItemStack(Material.END_ROD), new ItemStack(Material.GOLDEN_APPLE),
-            Setup.TOKEN, Utils.makePotion(new PotionData(PotionType.WEAKNESS, false, false)), SlimefunItems.STAFF_ELEMENTAL
+            Setup.TOKEN, createPotion(PotionType.WEAKNESS), SlimefunItems.STAFF_ELEMENTAL
         });
+    }
+
+    // Creates and returns a potion ItemStack with a specific PotionType
+    private static ItemStack createPotion(PotionType potionType) {
+        ItemStack potion = new ItemStack(Material.POTION);
+        PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
+        if (potionMeta != null) {
+            potionMeta.setBasePotionType(potionType);
+            potion.setItemMeta(potionMeta);
+        }
+        return potion;
     }
 
     // Creates and returns handler
@@ -64,7 +77,7 @@ public class CureWand extends SlimefunItem {
                 World w = zv.getWorld();
                 Location l = zv.getLocation();
                 w.playSound(l, Sound.ITEM_TOTEM_USE, 0.3F, 1F);
-                w.spawnParticle(Particle.TOTEM, l, 30);
+                w.spawnParticle(Particle.TOTEM_OF_UNDYING, l, 30);
 
                 // Cure zombie villager
                 zv.setConversionTime(1);

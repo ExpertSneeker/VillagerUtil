@@ -76,7 +76,7 @@ public class NitwitWand extends SlimefunItem {
                 Location l = v.getLocation();
                 w.playSound(l, Sound.ENTITY_ILLUSIONER_PREPARE_BLINDNESS, 1F, 1.5F);
                 w.playSound(l, Sound.BLOCK_BEACON_POWER_SELECT, 1F, 1F);
-                w.spawnParticle(Particle.VILLAGER_HAPPY, l, 50);
+                w.spawnParticle(Particle.HAPPY_VILLAGER, l, 50);
 
                 // Consume villager token
                 Utils.removeToken(p, inv);

@@ -1,6 +1,8 @@
 package me.apeiros.villagerutil;
 
+import com.bekvon.bukkit.residence.Residence;
 import io.github.mooy1.infinitylib.core.AbstractAddon;
+import me.apeiros.villagerutil.util.Utils;
 import net.guizhanss.guizhanlib.updater.GuizhanBuildsUpdater;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,6 +25,17 @@ public class VillagerUtil extends AbstractAddon {
 
     @Override
     public void enable() {
+        if (getServer().getPluginManager().isPluginEnabled("Residence")){
+            Residence residence;
+            residence = (Residence) getServer().getPluginManager().getPlugin("Residence");
+            Utils.setResidence(residence);
+        }else {
+            getLogger().severe("Residence插件未找到，插件将无法工作");
+//            getServer().getPluginManager().disablePlugin(this);
+            Utils.setResidence(null);
+            return;
+        }
+
         // Instance
         instance = this;
 
